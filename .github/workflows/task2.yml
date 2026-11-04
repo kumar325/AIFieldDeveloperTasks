@@ -1,0 +1,27 @@
+name: task2
+
+on:
+  push:
+    paths: ["task2/**", ".github/workflows/task2.yml"]
+  pull_request:
+    paths: ["task2/**", ".github/workflows/task2.yml"]
+  workflow_dispatch:
+
+jobs:
+  test:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+        python-version: ["3.11", "3.13"]
+    runs-on: ${{ matrix.os }}
+    defaults:
+      run:
+        working-directory: task2
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+      - run: python -m pip install -r requirements.txt
+      - run: python -m pytest -v
