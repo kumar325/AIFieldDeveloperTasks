@@ -1,0 +1,5 @@
+starlette>=0.46
+uvicorn>=0.34
+httpx>=0.28
+regex>=2024.11.6
+pytest>=8
