@@ -1,0 +1,27 @@
+name: task4
+
+on:
+  push:
+    paths: ["task4/**", ".github/workflows/task4.yml"]
+  pull_request:
+    paths: ["task4/**", ".github/workflows/task4.yml"]
+  workflow_dispatch:
+
+jobs:
+  test:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+        python-version: ["3.11", "3.13"]
+    runs-on: ${{ matrix.os }}
+    defaults:
+      run:
+        working-directory: task4
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+      - run: python -m pip install -r requirements.txt
+      - run: python -m pytest -v
